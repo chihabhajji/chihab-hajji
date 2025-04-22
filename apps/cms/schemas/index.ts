@@ -1,3 +1,3 @@
-export {default as pages} from './pages'
+import workExperience from './work-experience'
 
-export const schemaTypes = []
+export const schemaTypes = [workExperience]

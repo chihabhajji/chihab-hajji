@@ -7,16 +7,17 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "dotenv -- turbo run build",
-    "dev": "dotenv -- turbo run dev",
-    "dev:cms": "dotenv -- turbo run dev --filter=cms",
-    "dev:web": "dotenv -- turbo run dev --filter=web",
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "test": "turbo run test",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "test:ui": "turbo run test --filter=@sbt/ui",
+    "prepare": "turbo run prepare"
   },
   "devDependencies": {
     "prettier": "latest",
-    "turbo": "latest"
+    "turbo": "^2.5.0"
   },
   "engines": {
     "node": ">=14.0.0"
@@ -24,5 +25,5 @@
   "dependencies": {
     "dotenv-cli": "^7.0.0"
   },
-  "packageManager": "npm@8.11.0"
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
