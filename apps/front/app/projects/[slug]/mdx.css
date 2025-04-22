@@ -1,0 +1,124 @@
+/* [data-rehype-pretty-code-fragment] code { */
+/*   @apply grid min-w-full break-words rounded-none border-0 bg-transparent p-0 text-sm text-black; */
+/*   counter-reset: line; */
+/*   box-decoration-break: clone; */
+/* } */
+/* [data-rehype-pretty-code-fragment] .line { */
+/*   @apply px-4 py-1; */
+/* } */
+/* [data-rehype-pretty-code-fragment] [data-line-numbers] > .line::before { */
+/*   counter-increment: line; */
+/*   content: counter(line); */
+/*   display: inline-block; */
+/*   width: 1rem; */
+/*   margin-right: 1rem; */
+/*   text-align: right; */
+/*   color: gray; */
+/* } */
+/* [data-rehype-pretty-code-fragment] .line--highlighted { */
+/*   @apply bg-zinc-300 bg-opacity-10; */
+/* } */
+/* [data-rehype-pretty-code-fragment] .line-highlighted span { */
+/*   @apply relative; */
+/* } */
+/* [data-rehype-pretty-code-fragment] .word--highlighted { */
+/*   @apply rounded-md bg-zinc-300 bg-opacity-10 p-1; */
+/* } */
+/* [data-rehype-pretty-code-title] { */
+/*   @apply mt-4 py-2 px-4 text-sm font-medium; */
+/* } */
+/* [data-rehype-pretty-code-title] + pre { */
+/*   @apply mt-0; */
+/* } */
+/* src/app/globals.css */
+/* Code Block Styles */
+.prose pre {
+  background-color: #1e1e1e;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border: 1px solid #2d2d2d;
+}
+
+.prose code {
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-size: 0.9em;
+}
+
+.prose pre code {
+  color: #e6e6e6;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  border: none;
+}
+
+.prose :not(pre) > code {
+  background-color: rgba(110, 118, 129, 0.1);
+  color: #24292e;
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
+.dark .prose :not(pre) > code {
+  background-color: rgba(110, 118, 129, 0.3);
+  color: #e6e6e6;
+}
+
+/* Syntax highlighting colors */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-type {
+  color: #ff79c6;
+}
+
+.hljs-literal,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-attribute {
+  color: #8be9fd;
+}
+
+.hljs-number,
+.hljs-addition {
+  color: #bd93f9;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-deletion {
+  color: #f1fa8c;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-built_in,
+.hljs-name {
+  color: #50fa7b;
+}
+
+.hljs-variable,
+.hljs-template-variable,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: #ffb86c;
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-meta {
+  color: #6272a4;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
