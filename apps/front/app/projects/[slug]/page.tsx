@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { Header } from "./header";
 import { ReportView } from "./view";
-import { Redis } from "@upstash/redis";
 import { getWorkExperience, getWorkExperiences } from "../../../lib/sanity";
 import Mosaique from "../../../components/masonry/masonry";
 import Markdown from "./markdown";
@@ -12,8 +11,6 @@ type Props = {
     slug: string;
   }>;
 };
-
-const redis = Redis.fromEnv();
 
 export async function generateStaticParams(): Promise<
   Awaited<Props["params"]>[]
@@ -36,15 +33,10 @@ export default async function PostPage({ params }: Props) {
     notFound();
   }
 
-  const views = await redis.getset(
-    ["pageviews", "projects", slug].join(":"),
-    0
-  );
-
   return (
     <div className="">
       <div className="bg-zinc-50 min-h-screen text-black">
-        <Header project={project!} views={views ?? 0} />
+        <Header project={project} />
         <ReportView slug={project.slug!.current} />
         {!!project.longDescription && (
           <article className="px-4 py-12 mx-auto prose prose-zinc prose-quoteless">

@@ -1,5 +1,12 @@
 "use client";
-import { ArrowLeft, CameraOff, Eye, Github, Linkedin } from "lucide-react";
+import {
+  ArrowLeft,
+  CameraOff,
+  Eye,
+  Github,
+  Linkedin,
+  LoaderIcon,
+} from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { type WorkExperience } from "../../../lib/sanity/types";
@@ -9,9 +16,9 @@ import Image from "next/image";
 
 type Props = {
   project: WorkExperience;
-  views: number;
 };
-export const Header: React.FC<Props> = ({ project, views }) => {
+
+export const Header: React.FC<Props> = ({ project }) => {
   const imageProps = useNextSanityImage(client, project.previewImage ?? null);
   const ref = useRef<HTMLElement>(null);
   const [isIntersecting, setIntersecting] = useState(true);
@@ -39,6 +46,26 @@ export const Header: React.FC<Props> = ({ project, views }) => {
     return () => observer.disconnect();
   }, []);
 
+  const [views, setViews] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    fetch(`/api/views/${project.slug?.current}`, {
+      method: "POST",
+      body: JSON.stringify({ slug: project.slug?.current }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setViews(data);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  });
+
   return (
     <header
       ref={ref}
@@ -62,8 +89,14 @@ export const Header: React.FC<Props> = ({ project, views }) => {
               } `}
             >
               <Eye className="w-5 h-5" />{" "}
-              {Intl.NumberFormat("en-US", { notation: "compact" }).format(
-                views
+              {isLoading ? (
+                <div className="w-4 h-4 animate-spin">
+                  <LoaderIcon className="w-4 h-4" />
+                </div>
+              ) : (
+                Intl.NumberFormat("en-US", { notation: "compact" }).format(
+                  views
+                )
               )}
             </span>
             <Link
