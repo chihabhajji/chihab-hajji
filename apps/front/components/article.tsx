@@ -5,16 +5,39 @@ import { Eye, CameraOff } from "lucide-react";
 import { type WorkExperience } from "../lib/sanity/types";
 import { useNextSanityImage } from "next-sanity-image";
 import { client } from "../lib/sanity";
+import { useEffect, useState } from "react";
+import { LoaderIcon } from "lucide-react";
 
 type Props = {
   project: WorkExperience;
-  views: number;
   readMore?: boolean;
 };
 
-export const Article: React.FC<Props> = ({ project, views, readMore }) => {
+export const Article: React.FC<Props> = ({ project, readMore }) => {
+  console.log("rendered");
+  if (!project.slug?.current) {
+    return null;
+  }
   const imageProps = useNextSanityImage(client, project.previewImage ?? null);
-
+  const [views, setViews] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    fetch(`/api/views/${project.slug?.current}`, {
+      method: "POST",
+      body: JSON.stringify({ slug: project.slug?.current }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setViews(data);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  });
   return (
     <Link href={`/projects/${project.slug?.current}`} className="h-full">
       <article className="p-4 md:p-8 flex flex-col h-full">
@@ -23,7 +46,7 @@ export const Article: React.FC<Props> = ({ project, views, readMore }) => {
             {project.startDate ? (
               <time dateTime={new Date(project.startDate).toISOString()}>
                 {Intl.DateTimeFormat(undefined, { dateStyle: "medium" }).format(
-                  new Date(project.startDate),
+                  new Date(project.startDate)
                 )}
               </time>
             ) : (
@@ -32,7 +55,13 @@ export const Article: React.FC<Props> = ({ project, views, readMore }) => {
           </span>
           <span className="text-zinc-500 text-xs  flex items-center gap-1">
             <Eye className="w-4 h-4" />
-            {Intl.NumberFormat("en-US", { notation: "compact" }).format(views)}
+            {isLoading ? (
+              <div className="w-4 h-4 animate-spin">
+                <LoaderIcon className="w-4 h-4" />
+              </div>
+            ) : (
+              Intl.NumberFormat("en-US", { notation: "compact" }).format(views)
+            )}
           </span>
         </div>
         <h2 className="z-20 text-xl font-medium duration-1000 lg:text-3xl text-zinc-200 group-hover:text-white font-display">
