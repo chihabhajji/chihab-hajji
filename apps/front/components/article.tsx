@@ -14,7 +14,6 @@ type Props = {
 };
 
 export const Article: React.FC<Props> = ({ project, readMore }) => {
-  console.log("rendered");
   if (!project.slug?.current) {
     return null;
   }

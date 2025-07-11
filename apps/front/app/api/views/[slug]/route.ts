@@ -14,12 +14,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const key = ["pageviews", "projects", slug].join(":");
-    const viewCount = await redis.get<number>(key);
-    console.log(`[views] ${slug}: ${viewCount}`);
-    const views = viewCount ?? 0;
-
-    return NextResponse.json(views);
+    return NextResponse.json(
+      await redis.getset<number>(["pageviews", "projects", slug].join(":"), 0)
+    );
   } catch (error) {
     console.error("Error in API route /api/views:", error);
     return NextResponse.json(
