@@ -15,7 +15,11 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      await redis.getset<number>(["pageviews", "projects", slug].join(":"), 0)
+      await redis
+        .get<number>(["pageviews", "projects", slug].join(":"))
+        .then((number) => {
+          return number ?? 0;
+        })
     );
   } catch (error) {
     console.error("Error in API route /api/views:", error);
