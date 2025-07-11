@@ -14,13 +14,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    return NextResponse.json(
-      await redis
-        .get<number>(["pageviews", "projects", slug].join(":"))
-        .then((number) => {
-          return number ?? 0;
-        })
-    );
+    const key = ["pageviews", "projects", slug].join(":");
+    const viewCount = await redis.get<number>(key);
+    console.log(`[views] ${slug}: ${viewCount}`);
+    const views = viewCount ?? 0;
+
+    return NextResponse.json(views);
   } catch (error) {
     console.error("Error in API route /api/views:", error);
     return NextResponse.json(
